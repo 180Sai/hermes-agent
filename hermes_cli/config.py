@@ -3026,7 +3026,12 @@ def _default_value_for_key(dotted_key: str):
 _OPEN_DICT_TOP_LEVEL_KEYS = frozenset({
     "providers", "credential_pool_strategies", "mcp_servers", "hooks", "quick_commands",
     "personalities", "command_allowlist", "model_catalog", "channel_prompts", "server_actions",
-    "secrets", "goals", "loops"})
+    "secrets", "goals", "loops",
+    # OpenRouter per-model provider routing: children are user-supplied model IDs
+    # (``provider_routing.models.<org/model>.order``), read by agent/chat_completion_helpers.py,
+    # gateway/run_config_loaders.py, cron/scheduler.py and tui_gateway/server.py. Absent from
+    # DEFAULT_CONFIG, so without this every such path drew a bogus unknown-key notice.
+    "provider_routing"})
 
 # Top-level keys whose sub-keys are partially schema-defined (e.g. a PlatformConfig dataclass) but
 # where users may add fields DEFAULT_CONFIG doesn't enumerate: validate the FIRST segment only.
