@@ -77,6 +77,25 @@ class TestModelPicker:
             assert same(desktop_models) == same(models), key
         assert set(_SCHEMA_OVERRIDES["stt.provider"]["options"]) == BUILTIN_STT_PROVIDERS - {"local_command"}
 
+    def test_english_only_sizes_sit_beside_their_multilingual_sibling(self):
+        """Every `.en` size keeps its multilingual sibling, immediately before it.
+
+        Both pickers read the catalog in order, so an `.en` entry that drifts away from its
+        sibling is a UI regression; a `.en` with no sibling has no size to specialise.
+        """
+        local = STT_MODEL_CATALOG["local"]
+        assert len(local) == len(set(local))
+        english_only = [model for model in local if model.endswith(".en")]
+        for model in english_only:
+            assert local.index(model) == local.index(model.removesuffix(".en")) + 1
+
+    def test_local_model_normalization_keeps_english_only_sizes(self):
+        """A catalog `.en` value reaches faster-whisper unchanged instead of falling back."""
+        from tools.transcription_local import _normalize_local_model
+
+        assert _normalize_local_model("base.en") == "base.en"
+        assert _normalize_local_model("whisper-1") == "base"  # cloud-only names still fall back
+
     def test_configure_stt_model_defaults_to_current(self):
         config = {"stt": {"openai": {"model": "gpt-transcribe"}}}
         with patch(

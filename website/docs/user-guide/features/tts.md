@@ -497,7 +497,7 @@ stt:
   provider: "local"           # "local" | "groq" | "openai" | "mistral" | "xai" | "elevenlabs" | "deepinfra"
   language: "en"              # Global language hint applied to every provider unless a per-provider language overrides it; set "" to restore auto-detect
   local:
-    model: "base"             # tiny, base, small, medium, large-v3, turbo
+    model: "base"             # tiny, tiny.en, base, base.en, small, small.en, medium, medium.en, large-v3, turbo
     language: ""              # optional ISO-639-1 hint; blank = use HERMES_LOCAL_STT_LANGUAGE if set, else auto-detect
   groq:
     language: ""              # optional ISO-639-1 hint; blank = use HERMES_LOCAL_STT_LANGUAGE if set, else auto-detect
@@ -521,6 +521,10 @@ stt:
 | `small` | ~500 MB | Medium | Better |
 | `medium` | ~1.5 GB | Slower | Great |
 | `large-v3` | ~3 GB | Slowest | Best |
+
+Append `.en` to a size (`base.en`, `small.en`, `tiny.en`, `medium.en`) to use the English-only
+Systran/faster-whisper CT2 repo: same download and speed class as its multilingual sibling, but
+trained on English alone, so it transcribes English more accurately and skips language detection.
 
 The first use downloads the selected model from `huggingface.co`; later loads prefer the local cache and do not require an online revision check. On networks where the Hub is unavailable, export an accessible mirror in the shell or service that starts Hermes:
 

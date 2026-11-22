@@ -45,7 +45,12 @@ MAX_FILE_SIZE = 25 * 1024 * 1024  # 25 MB
 # feeds the `hermes tools` picker, the dashboard selects and the auto-correction sets below.
 # DeepInfra has no static list: its picker reads the live catalog.
 STT_MODEL_CATALOG = {
-    "local": ["base", "tiny", "small", "medium", "large-v3", "turbo"],
+    # ``<size>.en`` are the English-only CT2 repos (Systran/faster-whisper-<size>.en): same
+    # download footprint and latency class as their multilingual sibling, but trained on English
+    # only, so they decode English more accurately without an auto-detect step. Keep each one
+    # next to the size it specialises so both pickers read smallest-first.
+    "local": ["base", "base.en", "tiny", "tiny.en", "small", "small.en", "medium", "medium.en",
+              "large-v3", "turbo"],
     "groq": ["whisper-large-v3-turbo", "whisper-large-v3"],
     "openai": ["whisper-1", "gpt-4o-mini-transcribe", "gpt-4o-transcribe", "gpt-transcribe"],
     "mistral": ["voxtral-mini-latest", "voxtral-mini-2602"],
