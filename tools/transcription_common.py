@@ -47,8 +47,9 @@ MAX_FILE_SIZE = 25 * 1024 * 1024  # 25 MB
 STT_MODEL_CATALOG = {
     # ``<size>.en`` are the English-only CT2 repos (Systran/faster-whisper-<size>.en): same
     # download footprint and latency class as their multilingual sibling, but trained on English
-    # only, so they decode English more accurately without an auto-detect step. Keep each one
-    # next to the size it specialises so both pickers read smallest-first.
+    # only, so they decode English more accurately without an auto-detect step. Each one sits
+    # immediately after the size it specialises, and ``base`` stays first because this catalog's
+    # contract is default-first (the UIs re-sort it smallest-first for display).
     "local": ["base", "base.en", "tiny", "tiny.en", "small", "small.en", "medium", "medium.en",
               "large-v3", "turbo"],
     "groq": ["whisper-large-v3-turbo", "whisper-large-v3"],
