@@ -86,6 +86,7 @@ class TestModelPicker:
         local = STT_MODEL_CATALOG["local"]
         assert len(local) == len(set(local))
         english_only = [model for model in local if model.endswith(".en")]
+        assert english_only, "the local catalog must offer the English-only sizes"
         for model in english_only:
             assert local.index(model) == local.index(model.removesuffix(".en")) + 1
 
